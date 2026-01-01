@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>将棋マージ・サバイバル by はなび</title>
+    <title>駒合わせ by はなび</title>
     <style>
         body { background: #222; color: white; text-align: center; font-family: "Sawarabi Mincho", serif; margin: 0; display: flex; flex-direction: column; align-items: center; height: 100vh; overflow: hidden; }
         .ui-container { margin-top: 10px; margin-bottom: 5px; z-index: 10; }
@@ -16,7 +16,7 @@
 <body>
     <div id="timer">00.00</div>
     <div class="ui-container">
-        <div class="title">将棋マージ・サバイバル <small>by <a href="https://x.com/hanabi7711" target="_blank">はなび (@hanabi7711)</a></small></div>
+        <div class="title">駒合わせ <small>by <a href="https://x.com/hanabi7711" target="_blank">はなび (@hanabi7711)</a></small></div>
         <div class="status" id="status">安置の「歩」を掴んでスタート！</div>
     </div>
     <canvas id="gameCanvas"></canvas>
@@ -33,7 +33,7 @@
 
         const RANKS = ["歩", "香", "桂", "銀", "金", "角", "飛", "王"];
         const WIN_MSGS = [{l1: "お前には楽すぎる将棋じゃったな", l2: "You Win!"}, {l1: "天才的な駒さばきじゃ", l2: "Perfect Victory!"}];
-        const LOSE_MSGS = [{l1: "You lose", l2: ""}]; // マイルドに修正
+        const LOSE_MSGS = [{l1: "You lose", l2: ""}];
 
         let pieces = []; let bombs = [];
         let attachedPiece = null;
@@ -107,7 +107,7 @@
                 super(x, y, 16, 2);
                 const b = 3.5;
                 this.vx = (Math.random() - 0.5) * b; this.vy = (Math.random() - 0.5) * b;
-                this.invincibleTimer = 0.2; // 0.2秒の無敵時間
+                this.invincibleTimer = 0.2;
             }
             update(dt) {
                 if (this.invincibleTimer > 0) this.invincibleTimer -= dt;
@@ -116,7 +116,7 @@
             }
             draw() {
                 ctx.save();
-                if (this.invincibleTimer > 0) ctx.globalAlpha = 0.4; // 無敵中は半透明
+                if (this.invincibleTimer > 0) ctx.globalAlpha = 0.4;
                 ctx.font = "32px serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
                 ctx.fillText("💣", this.x, this.y);
                 ctx.restore();
@@ -192,7 +192,7 @@
                 for (let b of bombs) {
                     if (Math.hypot(b.x - p.x, b.y - p.y) < p.radius + b.radius) {
                         if (p === attachedPiece) {
-                            if (b.invincibleTimer <= 0) isGameOver = true; // 無敵時間終了後のみ判定
+                            if (b.invincibleTimer <= 0) isGameOver = true;
                         } else resolveCollision(p, b);
                     }
                 }
@@ -249,7 +249,7 @@
         }
 
         function tweetResult() {
-            const text = encodeURIComponent(`将棋マージ・サバイバル by はなび をクリア！\nタイム: ${elapsedTime}秒\n#将棋マージサバイバル`);
+            const text = encodeURIComponent(`駒合わせ by はなび をクリア！\nタイム: ${elapsedTime}秒\n#駒合わせ #1日1新`);
             const url = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(window.location.href)}`;
             window.open(url, '_blank');
         }
