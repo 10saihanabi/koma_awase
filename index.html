@@ -248,11 +248,13 @@
             ctx.fillStyle = "white"; ctx.font = "bold 16px sans-serif"; ctx.fillText("Xで結果を投稿", CX, CY + 205);
         }
 
-        // ツイート内容を修正
+        // ツイート内容の不具合修正版
         function tweetResult() {
-            const resultAction = isClear ? "をクリア！" : "に挑戦したよ！";
-            // #1日1新 を削除
-            const text = encodeURIComponent(`駒合わせ by はなび ${resultAction}\nタイム: ${elapsedTime}秒\n#駒合わせ`);
+            // isClearの状態を直接判定して文言を確定
+            let statusText = isClear ? "をクリア！" : "に挑戦したよ！";
+            
+            // #1日1新 を完全に削除
+            const text = encodeURIComponent(`駒合わせ by はなび ${statusText}\nタイム: ${elapsedTime}秒\n#駒合わせ`);
             const url = `https://twitter.com/intent/tweet?text=${text}&url=${encodeURIComponent(window.location.href)}`;
             window.open(url, '_blank');
         }
@@ -261,8 +263,13 @@
             if (isGameOver || isClear) {
                 const rect = canvas.getBoundingClientRect();
                 const mx = e.clientX - rect.left; const my = e.clientY - rect.top;
-                if (mx > CX - 80 && mx < CX + 80 && my > CY + 180 && my < CY + 220) tweetResult();
-                else { finalMsg = null; initGame(); }
+                // ボタンの判定
+                if (mx > CX - 80 && mx < CX + 80 && my > CY + 180 && my < CY + 220) {
+                    tweetResult();
+                } else {
+                    finalMsg = null;
+                    initGame();
+                }
                 return;
             }
             if (!attachedPiece) {
